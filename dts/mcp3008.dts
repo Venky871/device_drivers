@@ -1,0 +1,52 @@
+/dts-v1/;
+/plugin/;
+
+/*
+ * An overlay to describe Tenet's starter-kit for Raspberry Pi containing a few
+ * digital and analog i/o devices. The digital devices are connected directly
+ * to GPIO while the analog ones are processed through a MCP3008 AD converter
+ * wired to SPI0 pins.
+ * VDD/VREF to 3.3v(1),
+ * CS to SPI_CE0/GPIO8 (24)
+ * DOUT to SPI_MISO0/GPIO9 (21)
+ * DIN to SPI_MOSI0/GPIO10 (19)
+ * CLK to SPI_CLK0/GPIO11 (23)
+ *
+ * LEDs on GPIO4 (pin7) and GPIO17 (pin11) Buzzer is on GPIO27 (pin15) Switches
+ * are on GPIO13(pin 33) and GPIO22 (pin15)
+ *
+ * Analog channels
+ * CH0 Potentiometer
+ * CH1 LDR
+ * CH2 LM35 Thermal
+ * CH3..CH7 are open pins
+ */
+
+/ {
+    compatible = "brcm,bcm2836", "brcm,bcm2835", "brcm,bcm2708","brcm,bcm2837";
+
+    /* free up spidev0.0 */
+    fragment0 {
+        target = <&spi0>;
+        __overlay__ {
+            status = "okay";
+            spidev@0 {
+                status = "disabled";
+            };
+        };
+    };
+
+    /* mcp3008 is wired into spidev0.0 */
+    fragment1 {
+        target = <&spi0>;
+        __overlay__ {
+            #address-cells = <1>;
+            #size-cells = <0>;
+            mcp3x0x@0 {
+                compatible = "mcp3008";
+                reg = <0>; /* ce0 */
+		spi-max-frequency = <0x7a120>;
+            };
+        };
+    };
+};

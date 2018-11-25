@@ -1,0 +1,1 @@
+SUBSYSTEM=="misc", ACTION=="add", KERNEL=="goonj*", SYMLINK+="gpio/gp%n", GROUP="pi", MODE="0666", ENV{VENDOR}="ESD856"
