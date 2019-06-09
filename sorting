@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <math.h>
+int main()
+{
+    int arr[5], i,t, k, j;
+    for(i=0;  i<5; i++)
+    { 
+        scanf("%d", &arr[i]);
+    }
+    
+    for(k=0;k<4;k++)
+    {
+
+        for(j=k+1; j<5;j++)
+        {
+            if(arr[j]<arr[k])
+            {
+                t=arr[k];
+                arr[k]=arr[j];
+                arr[j]=t;   }
+            
+        }
+ //printf("%d\t", low);
+    }
+    printf("\n");
+    for(i=0; i<5;i++)
+    printf("%d\t", arr[i]);
+}
